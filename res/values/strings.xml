@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shmup</string>
+    <string name="Menu">STRING_MENU</string>
+    <string name="STRING_MENU">Menu</string>
+    <string name="STRING_NEWGAME">New Game</string>
+    <string name="STRING_EASY">Easy</string>
+    <string name="STRING_MEDIUM">Medium</string>
+    <string name="STRING_HARD">Hard</string>
+    <string name="STRING_LUDICROUS">Ludicrous</string>
+    <string name="STRING_REALLY_QUIT">Really quit?</string>
+    <string name="STRING_QUIT">Quit?</string>
+    <string name="STRING_YES">Yes</string>
+    <string name="STRING_NO">No</string>
+</resources>

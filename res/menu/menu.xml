@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/MENU_START" android:title="@string/STRING_NEWGAME">
+        <menu>
+            <item android:id="@+id/MENU_EASY" android:title="@string/STRING_EASY"></item>
+            <item android:id="@+id/MENU_MEDIUM" android:title="@string/STRING_MEDIUM"></item>
+            <item android:id="@+id/MENU_HARD" android:title="@string/STRING_HARD"></item>
+            <item android:id="@+id/MENU_LUDICROUS" android:title="@string/STRING_LUDICROUS"></item>
+        </menu>
+    </item>
+    
+</menu>
