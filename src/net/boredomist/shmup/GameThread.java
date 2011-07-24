@@ -22,13 +22,16 @@ public class GameThread extends Thread {
 
 	private Input mInput;
 
+	private boolean mCreated;
+
 	public GameThread(SurfaceHolder surfaceHolder, Context context) {
 		mSurfaceHolder = surfaceHolder;
 		mContext = context;
 		mState = GameState.MENU;
 		mInput = new Input();
-		
-		mController = new MenuController(this);
+
+		mController = null;
+		mCreated = false;
 	}
 
 	public Input getInput() {
@@ -37,12 +40,17 @@ public class GameThread extends Thread {
 
 	public void setSurfaceSize(int w, int h) {
 		mWidth = w;
-		mHeight = h;		
+		mHeight = h;
+
 		mController = new MenuController(this);
+		mController.setGameState(mState);
+		mCreated = true;
 	}
 
 	public void setGameState(GameState s) {
-		mController.setGameState(s);
+		if (mController != null) {
+			mController.setGameState(s);
+		}
 		mState = s;
 	}
 
@@ -64,12 +72,15 @@ public class GameThread extends Thread {
 		Canvas c;
 		double nextTick = System.currentTimeMillis();
 		while (mRun) {
-
 			try {
 				// clamp to 30fps
 				Thread.sleep(1000 / 30);
 			} catch (InterruptedException e) {
 				Log.d("SHM", "Thread interrupted: " + e);
+			}
+
+			if (!mCreated) {
+				continue;
 			}
 
 			final int MAX_FRAMESKIP = 10;

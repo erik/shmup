@@ -11,6 +11,7 @@ public class MenuController extends Controller {
 	private Paint mPaint;
 	private Typeface mFont;
 	private GameWorld mWorld;
+	private ScrollingBackground mBackground;
 	
 	public MenuController(GameThread thread) {
 		super(thread);
@@ -28,15 +29,18 @@ public class MenuController extends Controller {
 		
 		mWorld = new MenuWorld(this);
 		
+		mBackground = new ScrollingBackground(this);
+		
 		mState = GameState.MENU;
 	}
 	
 	public void update() {
 		mWorld.update();
+		mBackground.update();
 	}
 
 	public void draw(Canvas canvas) {
-		canvas.drawColor(Color.BLACK);
+		mBackground.draw(canvas);
 		mWorld.draw(canvas);
 		canvas.drawText("Shmup", getWidth() / 2, getHeight() / 2, mPaint);
 	}

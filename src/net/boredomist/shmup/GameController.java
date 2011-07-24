@@ -21,6 +21,7 @@ public class GameController extends Controller {
 	private Typeface mFont;
 		
 	private GameWorld mWorld;
+	private ScrollingBackground mBackground;
 	
 	public GameController(GameThread thread, Difficulty d) {
 		super(thread);
@@ -38,17 +39,18 @@ public class GameController extends Controller {
 		mPaint.setTextSize(64);
 		
 		mWorld = new GameWorld(this);
-				
+		
+		mBackground = new ScrollingBackground(this);
 		
 	}
 	
 	public void update() {
 		mWorld.update();
+		mBackground.update();
 	}
 
 	public void draw(Canvas canvas) {	
-		canvas.drawColor(Color.BLACK);
-		
+		mBackground.draw(canvas);
 		mWorld.draw(canvas);
 	}
 
