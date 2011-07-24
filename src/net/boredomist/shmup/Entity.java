@@ -32,6 +32,10 @@ public abstract class Entity {
 	}
 
 	public void takeDamage(float dam) {
+		if(mDead) {
+			return;
+		}
+		
 		mLife -= dam;
 
 		if (mLife <= 0) {
@@ -67,6 +71,14 @@ public abstract class Entity {
 				+ getWidth(), (int) mPosition.Y + getHeight());
 	}
 
+	public float getX() {
+		return mPosition.X;
+	}
+	
+	public float getY() {
+		return mPosition.Y;
+	}
+	
 	public void setXY(float x, float y) {
 		mPosition.X = x;
 		mPosition.Y = y;

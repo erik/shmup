@@ -10,20 +10,21 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 
 public class GameWorld {
-	private Context mContext;
-	private PlayerShip mPlayerShip;
-	private ArrayList<Enemy> mEnemies;
-	private ArrayList<ParticleSystem> mSystems;
-	private Point mSize;
-	private Input mInput;
-	private Random mRandom;
-	private boolean mGameOver;
-	private Paint mPaint;
+	protected Context mContext;
+	protected PlayerShip mPlayerShip;
+	protected ArrayList<Enemy> mEnemies;
+	protected ArrayList<ParticleSystem> mSystems;
+	protected Point mSize;
+	protected Input mInput;
+	protected Random mRandom;
+	protected boolean mGameOver;
+	protected Paint mPaint;
 
 	public GameWorld(Controller controller) {
 		mContext = controller.getContext();
 		mSize = new Point(controller.getWidth(), controller.getHeight());
 		mInput = controller.getInput();
+		
 		mPlayerShip = new PlayerShip(this);
 		mEnemies = new ArrayList<Enemy>();
 		mSystems = new ArrayList<ParticleSystem>();

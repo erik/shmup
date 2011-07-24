@@ -36,10 +36,9 @@ public class GameThread extends Thread {
 	}
 
 	public void setSurfaceSize(int w, int h) {
-		mController.setSize(w, h);
-
 		mWidth = w;
-		mHeight = h;
+		mHeight = h;		
+		mController = new MenuController(this);
 	}
 
 	public void setGameState(GameState s) {

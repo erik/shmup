@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 public class MenuController extends Controller {
-	private int x, y, xv, yv;
 	private Paint mPaint;
+	private Typeface mFont;
+	private GameWorld mWorld;
 	
 	public MenuController(GameThread thread) {
 		super(thread);
@@ -16,27 +18,27 @@ public class MenuController extends Controller {
 		mPaint = new Paint();
 		mPaint.setAntiAlias(true);
 		mPaint.setColor(Color.WHITE);
+
+		mPaint.setTextAlign(Paint.Align.CENTER);
+
+		mFont = Typeface.createFromAsset(mContext.getAssets(),
+				"fonts/samplefont.ttf");
+		mPaint.setTypeface(mFont);
+		mPaint.setTextSize(64);
+		
+		mWorld = new MenuWorld(this);
 		
 		mState = GameState.MENU;
-		x = y = 100;
-		xv = (int)(Math.random() * 35);
-		yv = (int)(Math.random() * 35);
 	}
 	
 	public void update() {
-		if(x <= 0 || x >= mWidth) {
-			xv = -xv;
-		}
-		if(y < 0 || y > mHeight) {
-			yv = -yv;
-		}
-		x += xv;
-		y += yv;
+		mWorld.update();
 	}
 
 	public void draw(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
-		canvas.drawCircle(x,  y, 20, mPaint);
+		mWorld.draw(canvas);
+		canvas.drawText("Shmup", getWidth() / 2, getHeight() / 2, mPaint);
 	}
 
 	public Bundle saveState(Bundle b) {
