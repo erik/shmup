@@ -12,6 +12,9 @@ public class RocketParticleSystem extends ParticleSystem {
 		
 		mVelocity = new Point(2, 10);
 		mLife = 15;
+		
+		mStartColor = Color.RED;
+		mStopColor = Color.YELLOW;
 	}
 	
 	public RocketParticleSystem(int x, int y, int xv, int yv, int life, int emitEach) {
@@ -27,7 +30,7 @@ public class RocketParticleSystem extends ParticleSystem {
 		int xv = (int)(Math.random() * mVelocity.X) - (int)mVelocity.X / 2;
 		int yv = (int)(Math.random() * mVelocity.Y);
 		
-		Particle p = new Particle(x, mY, xv, yv, ((int)(Math.random() * mLife)), 2, Color.RED, Color.YELLOW);
+		Particle p = new Particle(x, mY, xv, yv, ((int)(Math.random() * mLife)), 2, mStartColor, mStopColor);
 		return p;		
 	}
 

@@ -20,8 +20,10 @@ public class Missile extends Bullet {
 		mVelocity.X = (int)Math.abs((targetX - x) / ((targetY - y) / 15) + .01);
 		mVelocity.Y = 15;
 
-		mDamage = 50;
+		mDamage = 35;
 
+		mRocket.setColor(Color.RED,	Color.YELLOW);
+		
 		mPaint = new Paint();
 		mPaint.setColor(Color.RED);
 	}
@@ -52,6 +54,7 @@ public class Missile extends Bullet {
 
 		Entity c = checkCollisions();
 		if (c != null) {
+			mWorld.addExplosion(mPosition.X, mPosition.Y);
 			c.takeDamage(mDamage);
 			mDead = true;
 		}

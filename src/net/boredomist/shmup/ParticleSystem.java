@@ -12,6 +12,7 @@ public class ParticleSystem {
 	protected int mNumberEmitted, mNumberToEmit;
 	protected int mEmitEachTick;
 	protected boolean mDead;
+	protected int mStartColor, mStopColor;
 
 	public ParticleSystem(int x, int y, int numEmit, int emitEach) {
 		mX = x;
@@ -22,14 +23,22 @@ public class ParticleSystem {
 
 		mParticles = new ArrayList<Particle>();
 		mDead = false;
+		
+		mStartColor = Color.YELLOW;
+		mStopColor = Color.RED;
 	}
 
+	public void setColor(int start, int stop) {
+		mStartColor = start;
+		mStopColor = stop;
+	}
+	
 	// this just exists to make it easier to override in subclasses
 	protected Particle createParticle() {
 		int cos = (int) (((int)(Math.random() * 10) + 1) * Math.cos((int) (Math.random() * 2 * Math.PI)));
 		int sin = (int) (((int)(Math.random() * 10) + 1) * Math.sin((int) (Math.random() * 2 * Math.PI)));
 		
-		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 3, Color.WHITE, Color.CYAN);
+		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 3, mStartColor, mStopColor);
 		return p;
 	}
 

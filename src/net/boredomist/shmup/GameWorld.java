@@ -19,22 +19,27 @@ public class GameWorld {
 	protected Random mRandom;
 	protected boolean mGameOver;
 	protected Paint mPaint;
+	protected int mKills;
+	protected int mStreak;
 
 	public GameWorld(Controller controller) {
 		mContext = controller.getContext();
 		mSize = new Point(controller.getWidth(), controller.getHeight());
 		mInput = controller.getInput();
-		
+
 		mPlayerShip = new PlayerShip(this);
 		mEnemies = new ArrayList<Enemy>();
 		mSystems = new ArrayList<ParticleSystem>();
 		mRandom = new Random();
 		mGameOver = false;
-		
+
+		mKills = mStreak = 0;
+
 		mPaint = new Paint();
 		mPaint.setColor(Color.WHITE);
 		mPaint.setAntiAlias(true);
-		mPaint.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/samplefont.ttf"));
+		mPaint.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+				"fonts/samplefont.ttf"));
 		mPaint.setTextAlign(Paint.Align.CENTER);
 		mPaint.setTextSize(64);
 
@@ -61,26 +66,39 @@ public class GameWorld {
 		}
 
 		for (int i = mSystems.size() - 1; i >= 0; --i) {
-			mSystems.get(i).update();
-			if (mSystems.get(i).isDead()) {
+			ParticleSystem s = mSystems.get(i);
+			s.update();
+			if (s.isDead()) {
 				mSystems.remove(i);
 			}
 		}
 
 		for (int i = mEnemies.size() - 1; i >= 0; --i) {
-			mEnemies.get(i).update();
-			if (mEnemies.get(i).isDead()) {
+			Enemy e = mEnemies.get(i);
+			e.update();
+			if (e.isDead()) {
 				mEnemies.remove(i);
+				mKills++;
+				mStreak++;
 			}
 		}
 
 		if (mPlayerShip.isDead()) {
 			mGameOver = true;
+			mStreak = 0;
 		} else {
 			mPlayerShip.update();
 		}
 	}
 
+	public int getStreak() {
+		return mStreak;
+	}
+	
+	public int getKills() {
+		return mKills;
+	}
+	
 	public void draw(Canvas canvas) {
 		for (Enemy e : mEnemies) {
 			e.draw(canvas);

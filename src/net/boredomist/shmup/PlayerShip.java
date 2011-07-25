@@ -18,12 +18,19 @@ public class PlayerShip extends Entity {
 	private Direction mDirection;
 	private Drawable mDrawableLeft, mDrawableCenter, mDrawableRight;
 	private RocketParticleSystem mRocket;
-	private ArrayList<Bullet> mBullets;
-	private int mBulletCooldown, mRocketCooldown;
 	private Paint mPaint;
+	private PlayerGun mGun;
+	private int mLastStreak;
 
 	public PlayerShip(GameWorld world) {
 		super(world);
+
+		mAllowOutY = false;
+
+		mGun = new PlayerGun(world, this);
+
+		mGun.addGun(Gun.DEFAULT);
+		mLastStreak = 0;
 
 		mDirection = Direction.STRAIGHT;
 
@@ -36,28 +43,13 @@ public class PlayerShip extends Entity {
 
 		mRocket = new RocketParticleSystem((int) mPosition.X,
 				(int) mPosition.Y, 10);
-		mBulletCooldown = mRocketCooldown = 0;
-		mBullets = new ArrayList<Bullet>();
-		
+
 		mLife = MAX_LIFE;
 
 		mPaint = new Paint();
 		mPaint.setColor(Color.WHITE);
-		
-		setXY(mWorld.getWidth() / 2, mWorld.getHeight() - (HEIGHT + 20));
-	}
 
-	public void fire() {
-		if (mRocketCooldown <= 0) {
-			mBullets.add(new Missile((int) mPosition.X + WIDTH / 2,
-					(int) mPosition.Y, mWorld.getInput().getTouchX(), mWorld
-							.getInput().getTouchY(), mWorld));
-			mRocketCooldown = 20;
-		} else {
-			mBullets.add(new Bullet((int) mPosition.X + WIDTH / 2,
-					(int) mPosition.Y, mWorld));
-			mBulletCooldown = 4;
-		}
+		setXY(mWorld.getWidth() / 2, mWorld.getHeight() - (HEIGHT + 20));
 	}
 
 	@Override
@@ -69,6 +61,9 @@ public class PlayerShip extends Entity {
 
 	public void updateInput() {
 		Input input = mWorld.getInput();
+
+		mGun.update();
+
 		float x = input.getAccelX();
 		float y = input.getAccelY();
 
@@ -83,14 +78,11 @@ public class PlayerShip extends Entity {
 			mDirection = Direction.STRAIGHT;
 		}
 
-		int xt = input.getTouchX();
-		int yt = input.getTouchY();
-
-		if (xt != -1 && yt != -1
-				&& (mBulletCooldown <= 0 || mRocketCooldown <= 0)) {
-			this.fire();
+		if (input.getTouchX() != -1) {
+			mGun.fire(input.getTouchX(), input.getTouchY());
 			input.setTouch(-1, -1);
 		}
+
 	}
 
 	public void update() {
@@ -101,24 +93,24 @@ public class PlayerShip extends Entity {
 
 		checkBounds();
 
-		mBulletCooldown--;
-		mRocketCooldown--;
-
-		for (int i = mBullets.size() - 1; i >= 0; --i) {
-			Bullet b = mBullets.get(i);
-
-			b.update();
-			if (b.isDead()) {
-				mBullets.remove(i);
-			}
-		}
-
-		if(mLife < MAX_LIFE) {
+		if (mLife < MAX_LIFE) {
 			mLife += .5;
 		}
-		
+
+		int streak = mWorld.getStreak();
+		if (streak == 0 || mLastStreak == streak) {
+
+		} else if (streak % 31 == 0) {
+			mGun.addGun(Gun.AUTOMISSILE, 500);
+			mLastStreak = streak;
+		} else if (streak % 7 == 0) {
+			mGun.addGun(Gun.MISSILE, 500);
+			mLastStreak = streak;
+		}
+
 		mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y + HEIGHT);
 		mRocket.update();
+
 	}
 
 	public void draw(Canvas canvas) {
@@ -138,16 +130,18 @@ public class PlayerShip extends Entity {
 		int x = (int) mPosition.X;
 		int y = (int) mPosition.Y;
 
-		for (Bullet b : mBullets) {
-			b.draw(canvas);
-		}
-
 		frsrs.setBounds(x, y, x + WIDTH, y + HEIGHT);
 		frsrs.draw(canvas);
 
 		mRocket.draw(canvas);
-		
+		mGun.draw(canvas);
+
+		mPaint.setTextAlign(Paint.Align.LEFT);
 		canvas.drawText("Life: " + mLife, 0, mWorld.getHeight() - 20, mPaint);
+		
+		mPaint.setTextAlign(Paint.Align.RIGHT);
+		canvas.drawText("Streak: " + mWorld.getStreak(), mWorld.getWidth(),
+				mWorld.getHeight() - 20, mPaint);
 	}
 
 	@Override

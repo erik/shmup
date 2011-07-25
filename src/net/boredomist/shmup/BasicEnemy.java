@@ -47,7 +47,7 @@ public class BasicEnemy extends Enemy {
 	}
 
 	public void update() {
-		mWut = (mWut + 2);
+		mWut = mWut + 1;
 		if (mPosition.Y < mYDest) {
 			mPosition.Y += 5;
 		}

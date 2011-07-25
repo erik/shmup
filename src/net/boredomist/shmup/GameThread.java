@@ -73,8 +73,8 @@ public class GameThread extends Thread {
 		double nextTick = System.currentTimeMillis();
 		while (mRun) {
 			try {
-				// clamp to 30fps
-				Thread.sleep(1000 / 30);
+				// clamp to 35fps
+				Thread.sleep(1000 / 35);
 			} catch (InterruptedException e) {
 				Log.d("SHM", "Thread interrupted: " + e);
 			}

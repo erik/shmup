@@ -11,6 +11,8 @@ public abstract class Entity {
 	protected Point mVelocity;
 	protected float mLife;
 	protected boolean mDead;
+	protected boolean mAllowOutY;
+	protected boolean mAllowOutX;
 
 	public Entity(GameWorld world) {
 		mWorld = world;
@@ -18,6 +20,9 @@ public abstract class Entity {
 		mVelocity = new Point(0, 0);
 		mLife = 100f;
 		mDead = false;
+
+		mAllowOutY = true;
+		mAllowOutX = false;
 	}
 
 	public abstract void update();
@@ -25,17 +30,18 @@ public abstract class Entity {
 	public abstract void draw(Canvas canvas);
 
 	public abstract int getWidth();
+
 	public abstract int getHeight();
-	
+
 	public boolean isDead() {
 		return mDead;
 	}
 
 	public void takeDamage(float dam) {
-		if(mDead) {
+		if (mDead) {
 			return;
 		}
-		
+
 		mLife -= dam;
 
 		if (mLife <= 0) {
@@ -61,9 +67,21 @@ public abstract class Entity {
 	}
 
 	public void checkBounds() {
-		mPosition.X = Math.max(Math.min(mPosition.X, mWorld.getWidth() - getWidth()), 0);
-		mPosition.Y = Math
-				.max(Math.min(mPosition.Y, mWorld.getHeight() - getHeight()), 0);
+		if (mAllowOutX) {
+			mPosition.X = Math.max(Math.min(mPosition.X, mWorld.getWidth()),
+					0 - getWidth());
+		} else {
+			mPosition.X = Math.max(
+					Math.min(mPosition.X, mWorld.getWidth() - getWidth()), 0);
+		}
+		if (mAllowOutY) {
+			mPosition.Y = Math.max(
+					Math.min(mPosition.Y, mWorld.getHeight() + getHeight()),
+					0 - getHeight());
+		} else {
+			mPosition.Y = Math.max(
+					Math.min(mPosition.Y, mWorld.getHeight() - getHeight()), 0);
+		}
 	}
 
 	public Rect getHitBox() {
@@ -74,11 +92,11 @@ public abstract class Entity {
 	public float getX() {
 		return mPosition.X;
 	}
-	
+
 	public float getY() {
 		return mPosition.Y;
 	}
-	
+
 	public void setXY(float x, float y) {
 		mPosition.X = x;
 		mPosition.Y = y;
