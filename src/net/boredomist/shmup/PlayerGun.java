@@ -67,8 +67,11 @@ public class PlayerGun {
 	public void update() {
 		mTicks++;
 
-		if (mHasDefault && !mDefaultForever) {
-			if (mDefaultTicks-- <= 0) {
+		if (mHasDefault) {
+			if (mTicks % Gun.DEFAULT.getCooldownPeriod() == 0) {
+				mBullets.add(new Bullet((int)mShip.mPosition.X + PlayerShip.WIDTH / 2, (int)mShip.mPosition.Y, mWorld));
+			}
+			if (!mDefaultForever && mDefaultTicks-- <= 0) {
 				mHasDefault = false;
 			}
 		}
@@ -98,10 +101,8 @@ public class PlayerGun {
 		int x = (int) mShip.mPosition.X, y = (int) mShip.mPosition.Y;
 
 		if (tx != -1) {
-			if (mHasDefault && mTicks % Gun.DEFAULT.getCooldownPeriod() == 0) {
-				mBullets.add(new Bullet(x + PlayerShip.WIDTH / 2, y, mWorld));
-			}
-			if (mHasAutoMissile && mTicks % Gun.AUTOMISSILE.getCooldownPeriod() == 0) {
+			if (mHasAutoMissile
+					&& mTicks % Gun.AUTOMISSILE.getCooldownPeriod() == 0) {
 				mBullets.add(new AutoMissile(x, y, mWorld));
 			}
 			if (mHasMissile && mTicks % Gun.MISSILE.getCooldownPeriod() == 0) {
