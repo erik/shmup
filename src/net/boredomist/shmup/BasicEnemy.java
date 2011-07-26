@@ -59,7 +59,7 @@ public class BasicEnemy extends Enemy {
 			mBullets.add(new Bullet((int) mPosition.X + WIDTH / 2,
 					(int) mPosition.Y + HEIGHT, 0, 20, true, mWorld));
 		}
-		mPosition.X += (int) (5 * Math.cos(Math.toRadians(mWut)));
+		mPosition.X += (int) (5 * MathHelper.cos(mWut));
 
 		for (int i = mBullets.size() - 1; i >= 0; --i) {
 			Bullet b = mBullets.get(i);

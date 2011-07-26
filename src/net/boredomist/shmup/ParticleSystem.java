@@ -35,8 +35,8 @@ public class ParticleSystem {
 	
 	// this just exists to make it easier to override in subclasses
 	protected Particle createParticle() {
-		int cos = (int) (((int)(Math.random() * 10) + 1) * Math.cos((int) (Math.random() * 2 * Math.PI)));
-		int sin = (int) (((int)(Math.random() * 10) + 1) * Math.sin((int) (Math.random() * 2 * Math.PI)));
+		int cos = (int) (((int)(Math.random() * 10) + 1) * MathHelper.cos((int) (Math.random() * 360)));
+		int sin = (int) (((int)(Math.random() * 10) + 1) * MathHelper.sin((int) (Math.random() * 360)));
 		
 		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 3, mStartColor, mStopColor);
 		return p;
