@@ -30,6 +30,7 @@ public class PlayerShip extends Entity {
 		mGun = new PlayerGun(world, this);
 
 		mGun.addGun(Gun.DEFAULT);
+		
 		mLastStreak = 0;
 
 		mDirection = Direction.STRAIGHT;

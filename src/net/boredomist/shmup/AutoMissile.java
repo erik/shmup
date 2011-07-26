@@ -2,6 +2,7 @@ package net.boredomist.shmup;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 
 public class AutoMissile extends Bullet {
 
@@ -60,8 +61,21 @@ public class AutoMissile extends Bullet {
 	}
 
 	public void draw(Canvas canvas) {
+		mPaint.setColor(Color.BLUE);
+		mPaint.setStyle(Paint.Style.FILL);
 		canvas.drawRect(mPosition.X, mPosition.Y, mPosition.X + WIDTH,
 				mPosition.Y + HEIGHT, mPaint);
+		
+		if(mTarget != null && !mTarget.isDead()) {
+			mPaint.setStyle(Paint.Style.STROKE);
+			mPaint.setColor(Color.RED);
+			
+			float x = mTarget.getX(), y = mTarget.getY();
+			int w = mTarget.getWidth(), h = mTarget.getHeight();
+			
+			canvas.drawCircle(x + w / 2, y + h / 2, w > h ? w : h, mPaint);
+		}
+		
 		mRocket.draw(canvas);
 	}
 }
