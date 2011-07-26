@@ -101,9 +101,11 @@ public class PlayerShip extends Entity {
 		if (streak == 0 || mLastStreak == streak) {
 
 		} else if (streak % 31 == 0) {
+			mWorld.addNotification("AUTOMISSILES ACQUIRED.", 100, true);
 			mGun.addGun(Gun.AUTOMISSILE, 500);
 			mLastStreak = streak;
 		} else if (streak % 7 == 0) {
+			mWorld.addNotification("MISSILES ACQUIRED.", 100, true);
 			mGun.addGun(Gun.MISSILE, 500);
 			mLastStreak = streak;
 		}

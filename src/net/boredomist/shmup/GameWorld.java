@@ -21,12 +21,27 @@ public class GameWorld {
 	protected Paint mPaint;
 	protected int mKills;
 	protected int mStreak;
+	protected Notifications mNotifications;
+
+	public Typeface mTypeface;
 
 	public GameWorld(Controller controller) {
 		mContext = controller.getContext();
 		mSize = new Point(controller.getWidth(), controller.getHeight());
 		mInput = controller.getInput();
 
+		mTypeface = Typeface.createFromAsset(mContext.getAssets(),
+				"fonts/samplefont.ttf");
+
+		mPaint = new Paint();
+		mPaint.setColor(Color.WHITE);
+		mPaint.setAntiAlias(true);
+		mPaint.setTypeface(mTypeface);
+		mPaint.setTextAlign(Paint.Align.CENTER);
+		mPaint.setTextSize(64);
+
+		mNotifications = new Notifications(this);
+		
 		mPlayerShip = new PlayerShip(this);
 		mEnemies = new ArrayList<Enemy>();
 		mSystems = new ArrayList<ParticleSystem>();
@@ -34,15 +49,6 @@ public class GameWorld {
 		mGameOver = false;
 
 		mKills = mStreak = 0;
-
-		mPaint = new Paint();
-		mPaint.setColor(Color.WHITE);
-		mPaint.setAntiAlias(true);
-		mPaint.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
-				"fonts/samplefont.ttf"));
-		mPaint.setTextAlign(Paint.Align.CENTER);
-		mPaint.setTextSize(64);
-
 	}
 
 	public int getRandom(int n) {
@@ -55,6 +61,10 @@ public class GameWorld {
 
 	public void addExplosion(float x, float y) {
 		mSystems.add(new ParticleSystem((int) x, (int) y, 100, 30));
+	}
+
+	public void addNotification(String message, int ticks, boolean flash) {
+		mNotifications.addNotification(message, ticks, flash);
 	}
 
 	public void update() {
@@ -89,16 +99,19 @@ public class GameWorld {
 		} else {
 			mPlayerShip.update();
 		}
+
+		mNotifications.update();
+
 	}
 
 	public int getStreak() {
 		return mStreak;
 	}
-	
+
 	public int getKills() {
 		return mKills;
 	}
-	
+
 	public void draw(Canvas canvas) {
 		for (Enemy e : mEnemies) {
 			e.draw(canvas);
@@ -114,6 +127,9 @@ public class GameWorld {
 			canvas.drawText("GAME OVER", (int) mSize.X / 2, (int) mSize.Y / 2,
 					mPaint);
 		}
+
+		mNotifications.draw(canvas);
+
 	}
 
 	public void setSize(int w, int h) {
