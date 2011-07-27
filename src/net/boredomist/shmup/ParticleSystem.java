@@ -53,8 +53,9 @@ public class ParticleSystem {
 		}
 
 		for (int i = mParticles.size() - 1; i >= 0; --i) {
-			mParticles.get(i).update();
-			if (mParticles.get(i).isDead()) {
+			Particle p = mParticles.get(i);
+			p.update();
+			if (p.isDead()) {
 				mParticles.remove(i);
 			}
 		}

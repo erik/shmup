@@ -78,11 +78,13 @@ public class PlayerGun {
 		if (mHasMissile && !mMissileForever) {
 			if (mMissileTicks-- <= 0) {
 				mHasMissile = false;
+				mWorld.addNotification("MISSILES OFFLINE.", 100, true);
 			}
 		}
 		if (mHasAutoMissile && !mAutoMissileForever) {
 			if (mAutoMissileTicks-- <= 0) {
 				mHasAutoMissile = false;
+				mWorld.addNotification("AUTOMISSILES OFFLINE.", 100, true);				
 			}
 		}
 

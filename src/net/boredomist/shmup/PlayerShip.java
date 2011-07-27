@@ -30,7 +30,7 @@ public class PlayerShip extends Entity {
 		mGun = new PlayerGun(world, this);
 
 		mGun.addGun(Gun.DEFAULT);
-		
+
 		mLastStreak = 0;
 
 		mDirection = Direction.STRAIGHT;
@@ -99,16 +99,17 @@ public class PlayerShip extends Entity {
 		}
 
 		int streak = mWorld.getStreak();
-		if (streak == 0 || mLastStreak == streak) {
-
-		} else if (streak % 31 == 0) {
-			mWorld.addNotification("AUTOMISSILES ACQUIRED.", 100, true);
-			mGun.addGun(Gun.AUTOMISSILE, 500);
-			mLastStreak = streak;
-		} else if (streak % 7 == 0) {
-			mWorld.addNotification("MISSILES ACQUIRED.", 100, true);
-			mGun.addGun(Gun.MISSILE, 500);
-			mLastStreak = streak;
+		if (mLastStreak != streak) {
+			if (streak % 30 == 0) {
+				mWorld.addNotification("AUTOMISSILES ONLINE.", 100, true);
+				mGun.addGun(Gun.AUTOMISSILE, 500);
+				mLastStreak = streak;
+			}
+			if (streak % 15 == 0) {
+				mWorld.addNotification("MISSILES ONLINE.", 100, true);
+				mGun.addGun(Gun.MISSILE, 300);
+				mLastStreak = streak;
+			}
 		}
 
 		mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y + HEIGHT);
@@ -141,7 +142,7 @@ public class PlayerShip extends Entity {
 
 		mPaint.setTextAlign(Paint.Align.LEFT);
 		canvas.drawText("Life: " + mLife, 0, mWorld.getHeight() - 20, mPaint);
-		
+
 		mPaint.setTextAlign(Paint.Align.RIGHT);
 		canvas.drawText("Streak: " + mWorld.getStreak(), mWorld.getWidth(),
 				mWorld.getHeight() - 20, mPaint);
