@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.*;
 
 public class ShmupActivity extends Activity {
@@ -15,6 +16,10 @@ public class ShmupActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		/*
+		 * Debug.startMethodTracing("shmup");
+		 */
+		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN | 
@@ -84,7 +89,11 @@ public class ShmupActivity extends Activity {
 		        .setPositiveButton(R.string.STRING_YES, new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int which) {
 		                //Stop the activity
-		                ShmupActivity.this.finish();    
+		                ShmupActivity.this.finish();
+		                
+		                /*
+		                 * Debug.stopMethodTracing();
+		                 */
 		            }
 
 		        })

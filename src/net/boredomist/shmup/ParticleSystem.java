@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 
 public class ParticleSystem {
 	public List<Particle> mParticles;
@@ -13,6 +14,7 @@ public class ParticleSystem {
 	protected int mEmitEachTick;
 	protected boolean mDead;
 	protected int mStartColor, mStopColor;
+	protected Paint mPaint;
 
 	public ParticleSystem(int x, int y, int numEmit, int emitEach) {
 		mX = x;
@@ -23,6 +25,8 @@ public class ParticleSystem {
 
 		mParticles = new ArrayList<Particle>();
 		mDead = false;
+		
+		mPaint = new Paint();
 		
 		mStartColor = Color.YELLOW;
 		mStopColor = Color.RED;
@@ -68,7 +72,7 @@ public class ParticleSystem {
 
 	public void draw(Canvas canvas) {
 		for (Particle p : mParticles) {
-			p.draw(canvas);
+			p.draw(canvas, mPaint);
 		}
 	}
 

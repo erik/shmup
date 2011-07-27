@@ -11,7 +11,6 @@ public class Particle {
 	private int size;
 	private int x, y;
 	private int xv, yv;
-	private Paint paint;
 	private boolean dead;
 	private int dr;
 	private int dg;
@@ -25,7 +24,7 @@ public class Particle {
 		this.size = size;
 		this.xv = xv;
 		this.yv = yv;
-
+		
 		this.color = Color.rgb(start >> 16 & 0xFF, start >> 8 & 0xFF,
 				start & 0xFF);
 
@@ -35,8 +34,6 @@ public class Particle {
 		
 		this.dead = false;
 
-		paint = new Paint();
-		paint.setColor(color);
 	}
 
 	public boolean isDead() {
@@ -50,16 +47,16 @@ public class Particle {
 		}
 		x += xv;
 		y += yv;
-
+ 
 		int cr = (color >> 16 & 0xFF) + dr;
 		int cg = (color >> 8 & 0xFF) + dg;
 		int cb = (color & 0xFF) + db;
 
-		color = Color.rgb(cr, cg, cb);
-		paint.setColor(color);
+		color = Color.rgb(cr, cg, cb); 
 	}
 
-	public void draw(Canvas canvas) {
+	public void draw(Canvas canvas, Paint paint) {
+		paint.setColor(color);
 		canvas.drawRect(x, y, x + size, y + size, paint);
 	}
 }

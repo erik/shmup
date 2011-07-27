@@ -13,6 +13,7 @@ public abstract class Entity {
 	protected boolean mDead;
 	protected boolean mAllowOutY;
 	protected boolean mAllowOutX;
+	protected Rect mHitbox;
 
 	public Entity(GameWorld world) {
 		mWorld = world;
@@ -20,6 +21,8 @@ public abstract class Entity {
 		mVelocity = new Point(0, 0);
 		mLife = 100f;
 		mDead = false;
+
+		mHitbox = new Rect(0, 0, 0, 0);
 
 		mAllowOutY = true;
 		mAllowOutX = false;
@@ -85,8 +88,10 @@ public abstract class Entity {
 	}
 
 	public Rect getHitBox() {
-		return new Rect((int) mPosition.X, (int) mPosition.Y, (int) mPosition.X
+		mHitbox.set((int) mPosition.X, (int) mPosition.Y, (int) mPosition.X
 				+ getWidth(), (int) mPosition.Y + getHeight());
+
+		return mHitbox;
 	}
 
 	public float getX() {
