@@ -79,9 +79,8 @@ public class PlayerShip extends Entity {
 			mDirection = Direction.STRAIGHT;
 		}
 
-		if (input.getTouchX() != -1) {
+		if (input.hasTouch()) {
 			mGun.fire(input.getTouchX(), input.getTouchY());
-			input.setTouch(-1, -1);
 		}
 
 	}

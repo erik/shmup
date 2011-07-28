@@ -31,7 +31,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		thread.setGameState(GameState.MENU);
 
 		this.setOnTouchListener(this);
-		
+
 		getHolder().addCallback(this);
 		this.setFocusable(true);
 	}
@@ -86,9 +86,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	public boolean onTouch(View view, MotionEvent event) {
-		int x = (int)event.getX();
-		int y = (int)event.getY();
-		thread.getInput().setTouch(x, y);
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			thread.getInput().setHasTouch(false);
+			return false;
+		} else {
+			int x = (int) event.getX();
+			int y = (int) event.getY();
+			thread.getInput().setTouch(x, y);
+		}
 		return true;
 	}
 }

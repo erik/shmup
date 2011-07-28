@@ -9,6 +9,7 @@ public class Input {
 
 	private int mTouchX;
 	private int mTouchY;
+	private boolean mHasTouch;
 	
 	public Input() {
 		mAccelX = 0.0f;
@@ -17,6 +18,8 @@ public class Input {
 		
 		mTouchX = -1;
 		mTouchY = -1;
+		
+		mHasTouch = false;
 	}
 
 	public void setAccel(SensorEvent event) {
@@ -25,9 +28,18 @@ public class Input {
 		mAccelZ = event.values[2];
 	}
 	
+	public boolean hasTouch() {
+		return mHasTouch;
+	}
+	
+	public void setHasTouch(boolean b) {
+		mHasTouch = b;
+	}
+	
 	public void setTouch(int x, int y) {
 		mTouchX = x;
 		mTouchY = y;
+		mHasTouch = true;
 	}
 	
 	public float getAccelX() {

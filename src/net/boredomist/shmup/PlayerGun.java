@@ -8,10 +8,11 @@ public class PlayerGun {
 	private ArrayList<Bullet> mBullets;
 
 	private boolean mHasDefault = false, mHasMissile = false,
-			mHasAutoMissile = false;
-	private int mDefaultTicks = 0, mMissileTicks = 0, mAutoMissileTicks = 0;
+			mHasAutoMissile = false, mHasMultishot = false;
+	private int mDefaultTicks = 0, mMissileTicks = 0, mAutoMissileTicks = 0,
+			mMultishotTicks = 0;
 	private boolean mDefaultForever = false, mMissileForever = false,
-			mAutoMissileForever = false;
+			mAutoMissileForever = false, mMultishotForever = false;
 
 	private int mTicks;
 	private PlayerShip mShip;
@@ -44,6 +45,11 @@ public class PlayerGun {
 			mAutoMissileForever = false;
 			mAutoMissileTicks = activeForTicks;
 			break;
+		case MULTISHOT:
+			mHasMultishot = true;
+			mMultishotForever = false;
+			mMultishotTicks = activeForTicks;
+			break;
 		}
 	}
 
@@ -61,6 +67,10 @@ public class PlayerGun {
 			mHasAutoMissile = true;
 			mAutoMissileForever = true;
 			break;
+		case MULTISHOT:
+			mHasMultishot = true;
+			mMultishotForever = false;
+			break;
 		}
 	}
 
@@ -69,7 +79,8 @@ public class PlayerGun {
 
 		if (mHasDefault) {
 			if (mTicks % Gun.DEFAULT.getCooldownPeriod() == 0) {
-				mBullets.add(new Bullet((int)mShip.mPosition.X + PlayerShip.WIDTH / 2, (int)mShip.mPosition.Y, mWorld));
+				mBullets.add(new Bullet((int) mShip.mPosition.X
+						+ PlayerShip.WIDTH / 2, (int) mShip.mPosition.Y, mWorld));
 			}
 			if (!mDefaultForever && mDefaultTicks-- <= 0) {
 				mHasDefault = false;
@@ -84,7 +95,14 @@ public class PlayerGun {
 		if (mHasAutoMissile && !mAutoMissileForever) {
 			if (mAutoMissileTicks-- <= 0) {
 				mHasAutoMissile = false;
-				mWorld.addNotification("AUTOMISSILES OFFLINE.", 100, true);				
+				mWorld.addNotification("AUTOMISSILES OFFLINE.", 100, true);
+			}
+		}
+		
+		if(mHasMultishot && !mMissileForever) {
+			if (mMultishotTicks-- <= 0) {
+				mHasMultishot = false;
+				mWorld.addNotification("MULTISHOT OFFLINE.", 100, true);
 			}
 		}
 
@@ -100,7 +118,7 @@ public class PlayerGun {
 	}
 
 	public void fire(int tx, int ty) {
-		int x = (int) mShip.mPosition.X, y = (int) mShip.mPosition.Y;
+		int x = (int) mShip.mPosition.X + mShip.getWidth() / 2, y = (int) mShip.mPosition.Y;
 
 		if (tx != -1) {
 			if (mHasAutoMissile
@@ -109,6 +127,13 @@ public class PlayerGun {
 			}
 			if (mHasMissile && mTicks % Gun.MISSILE.getCooldownPeriod() == 0) {
 				mBullets.add(new Missile(x, y, tx, ty, mWorld));
+			}
+			if (mHasMultishot && mTicks % Gun.MULTISHOT.getCooldownPeriod() == 0) {
+				for(int i = 40; i < 140; i += 20) {
+					int cos = (int)(MathHelper.cos(i) * 10);
+					int sin = (int)(MathHelper.sin(i) * -20);
+					mBullets.add(new Bullet(x, y, cos, sin, false, mWorld));
+				}
 			}
 		}
 	}

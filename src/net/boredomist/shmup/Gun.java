@@ -1,7 +1,7 @@
 package net.boredomist.shmup;
 
 public enum Gun {
-	MISSILE, AUTOMISSILE, DEFAULT;
+	MISSILE, AUTOMISSILE, MULTISHOT, DEFAULT;
 
 	public int getCooldownPeriod() {
 		switch (this) {
@@ -9,6 +9,8 @@ public enum Gun {
 			return 4;
 		case MISSILE:
 			return 20;
+		case MULTISHOT:
+			return 10;
 		case AUTOMISSILE:
 			return 10;
 		}
