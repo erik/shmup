@@ -11,19 +11,29 @@ public class Missile extends Bullet {
 	private Point mTarget;
 	private ParticleSystem mRocket;
 
+	private boolean mEnemy;
+
 	public Missile(int x, int y, int targetX, int targetY, GameWorld world) {
+		this(x, y, targetX, targetY, false, world);
+	}
+
+	public Missile(int x, int y, int targetX, int targetY, boolean enemy,
+			GameWorld world) {
 		super(x, y, world);
+
+		mEnemy = enemy;
 
 		mTarget = new Point(targetX, targetY);
 		mRocket = new RocketParticleSystem(x, y, 2, 10, 5, 10);
 
-		mVelocity.X = (int)Math.abs((targetX - x) / ((targetY - y) / 15) + .01);
+		mVelocity.X = (int) Math
+				.abs((targetX - x) / ((targetY - y) / 15) + .01);
 		mVelocity.Y = 15;
 
-		mDamage = 35;
+		mDamage = mEnemy ? 20 : 35;
 
-		mRocket.setColor(Color.RED,	Color.YELLOW);
-		
+		mRocket.setColor(Color.RED, Color.YELLOW);
+
 		mPaint = new Paint();
 		mPaint.setColor(Color.RED);
 	}
@@ -52,14 +62,26 @@ public class Missile extends Bullet {
 			return;
 		}
 
-		Entity c = checkCollisions();
-		if (c != null) {
-			mWorld.addExplosion(mPosition.X, mPosition.Y);
-			c.takeDamage(mDamage);
-			mDead = true;
+		if (!mEnemy) {
+			Entity c = checkCollisions();
+			if (c != null) {
+				mWorld.addExplosion(mPosition.X, mPosition.Y);
+				c.takeDamage(mDamage);
+				mDead = true;
+			}
+		} else {
+			PlayerShip player = mWorld.getPlayer();
+			if (player.collidesWith(this)) {
+				player.takeDamage(mDamage);
+			}
 		}
 
-		mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y + HEIGHT);
+		if (mEnemy) {
+			mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y);
+		} else {
+			mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y
+					+ HEIGHT);
+		}
 		mRocket.update();
 	}
 

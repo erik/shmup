@@ -16,8 +16,10 @@ public class BasicEnemy extends Enemy {
 
 	private ArrayList<Bullet> mBullets;
 	private int mBulletCooldown;
-	
+
 	private int mDir;
+
+	private int mMissileCooldown;
 
 	public BasicEnemy(int yd, GameWorld world) {
 		super(world);
@@ -30,11 +32,12 @@ public class BasicEnemy extends Enemy {
 		mBullets = new ArrayList<Bullet>();
 
 		int tmp = world.getRandom(2) + 4;
-		
+
 		mDir = tmp % 2 == 0 ? -1 * tmp : 1 * tmp;
-		
+
 		mBulletCooldown = world.getRandom(15) + 20;
-		
+		mMissileCooldown = world.getRandom(500);
+
 		mDrawable = world.getContext().getResources()
 				.getDrawable(R.drawable.basic_enemy);
 	}
@@ -60,12 +63,24 @@ public class BasicEnemy extends Enemy {
 		}
 		checkBounds();
 
-		mBulletCooldown--;
-		if (mBulletCooldown <= 0) {
+		if (--mBulletCooldown <= 0) {
 			mBulletCooldown = 50;
 			mBullets.add(new Bullet((int) mPosition.X + WIDTH / 2,
 					(int) mPosition.Y + HEIGHT, 0, 20, true, mWorld));
 		}
+		if (--mMissileCooldown <= 0) {
+			mMissileCooldown = 300;
+			PlayerShip p = mWorld.getPlayer();
+
+			int tx = (int) p.getX(), ty = (int) p.getY();
+			tx = tx < 0 ? mWorld.getWidth() / 2 : tx;
+			ty = ty < 0 ? mWorld.getHeight() : ty + p.getHeight() / 2;
+
+			mBullets.add(new Missile((int) mPosition.X + WIDTH / 2,
+					(int) mPosition.Y + HEIGHT, tx - 10 + mWorld.getRandom(20),
+					ty, true, mWorld));
+		}
+
 		mPosition.X += (int) (MathHelper.cos(mWut) * mDir);
 
 		for (int i = mBullets.size() - 1; i >= 0; --i) {
