@@ -16,6 +16,8 @@ public class BasicEnemy extends Enemy {
 
 	private ArrayList<Bullet> mBullets;
 	private int mBulletCooldown;
+	
+	private int mDir;
 
 	public BasicEnemy(int yd, GameWorld world) {
 		super(world);
@@ -26,8 +28,13 @@ public class BasicEnemy extends Enemy {
 		mWut = 0;
 
 		mBullets = new ArrayList<Bullet>();
-		mBulletCooldown = 0;
 
+		int tmp = world.getRandom(2) + 4;
+		
+		mDir = tmp % 2 == 0 ? -1 * tmp : 1 * tmp;
+		
+		mBulletCooldown = world.getRandom(15) + 20;
+		
 		mDrawable = world.getContext().getResources()
 				.getDrawable(R.drawable.basic_enemy);
 	}
@@ -47,7 +54,7 @@ public class BasicEnemy extends Enemy {
 	}
 
 	public void update() {
-		mWut = mWut + 1;
+		++mWut;
 		if (mPosition.Y < mYDest) {
 			mPosition.Y += 5;
 		}
@@ -59,7 +66,7 @@ public class BasicEnemy extends Enemy {
 			mBullets.add(new Bullet((int) mPosition.X + WIDTH / 2,
 					(int) mPosition.Y + HEIGHT, 0, 20, true, mWorld));
 		}
-		mPosition.X += (int) (5 * MathHelper.cos(mWut));
+		mPosition.X += (int) (MathHelper.cos(mWut) * mDir);
 
 		for (int i = mBullets.size() - 1; i >= 0; --i) {
 			Bullet b = mBullets.get(i);
