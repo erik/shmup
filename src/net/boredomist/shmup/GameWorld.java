@@ -12,8 +12,11 @@ import android.graphics.Typeface;
 public class GameWorld {
 	protected Context mContext;
 	protected PlayerShip mPlayerShip;
+
 	protected ArrayList<Enemy> mEnemies;
 	protected ArrayList<ParticleSystem> mSystems;
+	protected ArrayList<Powerup> mPowerups;
+
 	protected Point mSize;
 	protected Input mInput;
 	protected Random mRandom;
@@ -41,10 +44,13 @@ public class GameWorld {
 		mPaint.setTextSize(64);
 
 		mNotifications = new Notifications(this);
-		
+
 		mPlayerShip = new PlayerShip(this);
+
 		mEnemies = new ArrayList<Enemy>();
 		mSystems = new ArrayList<ParticleSystem>();
+		mPowerups = new ArrayList<Powerup>();
+
 		mRandom = new Random();
 		mGameOver = false;
 
@@ -53,6 +59,10 @@ public class GameWorld {
 
 	public int getRandom(int n) {
 		return mRandom.nextInt(n);
+	}
+
+	public void addPowerup(Powerup p) {
+		mPowerups.add(p);
 	}
 
 	public void addExplosion(ParticleSystem s) {
@@ -83,10 +93,21 @@ public class GameWorld {
 			}
 		}
 
+		for (int i = mPowerups.size() - 1; i >= 0; --i) {
+			Powerup p = mPowerups.get(i);
+			p.update();
+			if (p.isDead()) {
+				mPowerups.remove(i);
+			}
+		}
+
 		for (int i = mEnemies.size() - 1; i >= 0; --i) {
 			Enemy e = mEnemies.get(i);
 			e.update();
 			if (e.isDead()) {
+				if (getRandom(25) == 0) {
+					addPowerup(new Powerup(this, (int) e.getX(), (int) e.getY()));
+				}
 				mEnemies.remove(i);
 				mKills++;
 				mStreak++;
@@ -119,6 +140,10 @@ public class GameWorld {
 
 		for (ParticleSystem s : mSystems) {
 			s.draw(canvas);
+		}
+
+		for (Powerup p : mPowerups) {
+			p.draw(canvas);
 		}
 
 		if (!mPlayerShip.isDead()) {

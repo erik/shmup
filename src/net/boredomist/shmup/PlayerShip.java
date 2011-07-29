@@ -95,20 +95,6 @@ public class PlayerShip extends Entity {
 			mLife += .5;
 		}
 
-		int streak = mWorld.getStreak();
-		if (mLastStreak != streak) {
-			if (streak % 30 == 0) {
-				mWorld.addNotification("AUTOMISSILES ONLINE.", 100, true);
-				mGun.addGun(Gun.AUTOMISSILE, 500);
-				mLastStreak = streak;
-			}
-			if (streak % 15 == 0) {
-				mWorld.addNotification("MISSILES ONLINE.", 100, true);
-				mGun.addGun(Gun.MISSILE, 300);
-				mLastStreak = streak;
-			}
-		}
-
 		mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y + HEIGHT);
 		mRocket.update();
 
@@ -153,6 +139,25 @@ public class PlayerShip extends Entity {
 	@Override
 	public int getHeight() {
 		return HEIGHT;
+	}
+
+	public void givePowerup() {
+		int rand = mWorld.getRandom(100);
+
+		if (rand < 25) {
+			mLife = 100.0f;
+			mWorld.addNotification("HEALTH RESTORED.", 100, true);
+		} else if (rand < 50) {
+			mWorld.addNotification("MISSILES ONLINE.", 100, true);
+			mGun.addGun(Gun.MISSILE, 500);
+		} else if (rand < 75) {
+			mWorld.addNotification("AUTOMISSILES ONLINE.", 100, true);
+			mGun.addGun(Gun.AUTOMISSILE, 500);
+		} else if (rand < 100) {
+			mWorld.addNotification("MULTISHOT ONLINE.", 100, true);
+			mGun.addGun(Gun.MULTISHOT, 500);
+		}
+
 	}
 
 }

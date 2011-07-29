@@ -26,11 +26,13 @@ public class Missile extends Bullet {
 		mTarget = new Point(targetX, targetY);
 		mRocket = new RocketParticleSystem(x, y, 2, 10, 5, 10);
 
-		mVelocity.X = (int) Math
-				.abs((targetX - x) / ((targetY - y) / 15) + .01);
+		float tmp = ((targetY - y) / 15);
+		tmp = tmp == 0 ? 1 : tmp;
+
+		mVelocity.X = (int) Math.abs((targetX - x) / tmp);
 		mVelocity.Y = 15;
 
-		mDamage = mEnemy ? 20 : 35;
+		mDamage = mEnemy ? 10 : 20;
 
 		mRocket.setColor(Color.RED, Color.YELLOW);
 
