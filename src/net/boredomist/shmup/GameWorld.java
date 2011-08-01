@@ -105,7 +105,7 @@ public class GameWorld {
 			Enemy e = mEnemies.get(i);
 			e.update();
 			if (e.isDead()) {
-				if (getRandom(25) == 0) {
+				if (getRandom(15) == 0) {
 					addPowerup(new Powerup(this, (int) e.getX(), (int) e.getY()));
 				}
 				mEnemies.remove(i);
