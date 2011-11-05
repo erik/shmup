@@ -1,9 +1,8 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 public class Particle {
 	public int color;
@@ -36,6 +35,11 @@ public class Particle {
 
 	}
 
+	public void draw(Canvas canvas, Paint paint) {
+		paint.setColor(color);
+		canvas.drawRect(x, y, x + size, y + size, paint);
+	}
+
 	public boolean isDead() {
 		return dead;
 	}
@@ -53,10 +57,5 @@ public class Particle {
 		int cb = (color & 0xFF) + db;
 
 		color = Color.rgb(cr, cg, cb); 
-	}
-
-	public void draw(Canvas canvas, Paint paint) {
-		paint.setColor(color);
-		canvas.drawRect(x, y, x + size, y + size, paint);
 	}
 }

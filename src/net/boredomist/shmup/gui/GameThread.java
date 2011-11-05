@@ -1,5 +1,7 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.gui;
 
+import net.boredomist.shmup.game.Controller;
+import net.boredomist.shmup.game.Difficulty;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -34,36 +36,42 @@ public class GameThread extends Thread {
 		mCreated = false;
 	}
 
-	public Input getInput() {
-		return mInput;
-	}
-
-	public void setSurfaceSize(int w, int h) {
-		mWidth = w;
-		mHeight = h;
-
+	public void endGame() {
+		setGameState(GameState.MENU);
 		mController = new MenuController(this);
-		mController.setGameState(mState);
-		mCreated = true;
 	}
 
-	public void setGameState(GameState s) {
-		if (mController != null) {
-			mController.setGameState(s);
-		}
-		mState = s;
+	public Context getContext() {
+		return mContext;
 	}
 
 	public GameState getGameState() {
 		return mState;
 	}
 
-	public void setRunning(boolean run) {
-		mRun = run;
+	public int getHeight() {
+		return mHeight;
+	}
+
+	public Input getInput() {
+		return mInput;
 	}
 
 	public SurfaceHolder getSurfaceHolder() {
 		return mSurfaceHolder;
+	}
+
+	public int getWidth() {
+		return mWidth;
+	}
+
+	public synchronized void restoreState(Bundle savedState) {
+		synchronized (mSurfaceHolder) {
+			setGameState(GameState.PAUSE);
+			mRun = true;
+
+			mController.saveState(savedState);
+		}
 	}
 
 	@Override
@@ -85,7 +93,7 @@ public class GameThread extends Thread {
 
 			final int MAX_FRAMESKIP = 10;
 			int loops = 0;
-			while ((double) System.currentTimeMillis() > nextTick
+			while (System.currentTimeMillis() > nextTick
 					&& loops++ < MAX_FRAMESKIP) {
 				mController.update();
 				nextTick += 1000 / 30.0;
@@ -114,13 +122,24 @@ public class GameThread extends Thread {
 		return map;
 	}
 
-	public synchronized void restoreState(Bundle savedState) {
-		synchronized (mSurfaceHolder) {
-			setGameState(GameState.PAUSE);
-			mRun = true;
-
-			mController.saveState(savedState);
+	public void setGameState(GameState s) {
+		if (mController != null) {
+			mController.setGameState(s);
 		}
+		mState = s;
+	}
+
+	public void setRunning(boolean run) {
+		mRun = run;
+	}
+
+	public void setSurfaceSize(int w, int h) {
+		mWidth = w;
+		mHeight = h;
+
+		mController = new MenuController(this);
+		mController.setGameState(mState);
+		mCreated = true;
 	}
 
 	public void startGame(Difficulty diff) {
@@ -128,22 +147,5 @@ public class GameThread extends Thread {
 		mController = new GameController(this, diff);
 
 		mRun = true;
-	}
-
-	public void endGame() {
-		setGameState(GameState.MENU);
-		mController = new MenuController(this);
-	}
-
-	public Context getContext() {
-		return mContext;
-	}
-
-	public int getWidth() {
-		return mWidth;
-	}
-
-	public int getHeight() {
-		return mHeight;
 	}
 }

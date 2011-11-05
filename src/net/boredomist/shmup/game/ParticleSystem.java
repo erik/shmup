@@ -1,8 +1,9 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
+import net.boredomist.shmup.MathHelper;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -32,11 +33,6 @@ public class ParticleSystem {
 		mStopColor = Color.RED;
 	}
 
-	public void setColor(int start, int stop) {
-		mStartColor = start;
-		mStopColor = stop;
-	}
-	
 	// this just exists to make it easier to override in subclasses
 	protected Particle createParticle() {
 		int cos = (int) (((int)(Math.random() * 10) + 1) * MathHelper.cos((int) (Math.random() * 360)));
@@ -44,6 +40,26 @@ public class ParticleSystem {
 		
 		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 3, mStartColor, mStopColor);
 		return p;
+	}
+	
+	public void draw(Canvas canvas) {
+		for (Particle p : mParticles) {
+			p.draw(canvas, mPaint);
+		}
+	}
+
+	public boolean isDead() {
+		return mDead;
+	}
+
+	public void setColor(int start, int stop) {
+		mStartColor = start;
+		mStopColor = stop;
+	}
+
+	public void setXY(int x, int y) {
+		mX = x;
+		mY = y;
 	}
 
 	public void update() {
@@ -68,21 +84,6 @@ public class ParticleSystem {
 			mDead = true;
 		}
 		
-	}
-
-	public void draw(Canvas canvas) {
-		for (Particle p : mParticles) {
-			p.draw(canvas, mPaint);
-		}
-	}
-
-	public void setXY(int x, int y) {
-		mX = x;
-		mY = y;
-	}
-
-	public boolean isDead() {
-		return mDead;
 	}
 
 }

@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.gui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,7 +22,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		super(ctx, attrs);
 
 		mSensorManager = (SensorManager) ctx
-				.getSystemService(Activity.SENSOR_SERVICE);
+				.getSystemService(Context.SENSOR_SERVICE);
 		mAccelerometer = mSensorManager
 				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -38,6 +37,31 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	public GameThread getThread() {
 		return thread;
+	}
+
+	public void onAccuracyChanged(Sensor event, int arg1) {
+		return;
+	}
+
+	public void onSensorChanged(SensorEvent event) {
+		if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+			return;
+		} else {
+			thread.getInput().setAccel(event);
+		}
+
+	}
+
+	public boolean onTouch(View view, MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			thread.getInput().setHasTouch(false);
+			return false;
+		} else {
+			int x = (int) event.getX();
+			int y = (int) event.getY();
+			thread.getInput().setTouch(x, y);
+		}
+		return true;
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -70,30 +94,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			} catch (InterruptedException e) {
 			}
 		}
-	}
-
-	public void onAccuracyChanged(Sensor event, int arg1) {
-		return;
-	}
-
-	public void onSensorChanged(SensorEvent event) {
-		if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
-			return;
-		} else {
-			thread.getInput().setAccel(event);
-		}
-
-	}
-
-	public boolean onTouch(View view, MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_UP) {
-			thread.getInput().setHasTouch(false);
-			return false;
-		} else {
-			int x = (int) event.getX();
-			int y = (int) event.getY();
-			thread.getInput().setTouch(x, y);
-		}
-		return true;
 	}
 }

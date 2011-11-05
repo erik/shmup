@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import java.util.Random;
 

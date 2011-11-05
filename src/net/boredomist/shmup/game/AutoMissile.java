@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -33,6 +33,27 @@ public class AutoMissile extends Bullet {
 	}
 
 	@Override
+	public void draw(Canvas canvas) {
+		mPaint.setColor(Color.BLUE);
+		mPaint.setStyle(Paint.Style.FILL);
+		canvas.drawRect(mPosition.X, mPosition.Y, mPosition.X + WIDTH,
+				mPosition.Y + HEIGHT, mPaint);
+		
+		mRocket.draw(canvas);
+		
+		if(mTarget != null && !mTarget.isDead()) {
+			mPaint.setStyle(Paint.Style.STROKE);
+			mPaint.setColor(Color.RED);
+			
+			float x = mTarget.getX(), y = mTarget.getY();
+			int w = mTarget.getWidth(), h = mTarget.getHeight();
+			
+			canvas.drawCircle(x + w / 2, y + h / 2, w > h ? w : h, mPaint);
+		}
+		
+	}
+
+	@Override
 	public void update() {
 		if (mTarget.isDead()) {
 			mDead = true;
@@ -58,25 +79,5 @@ public class AutoMissile extends Bullet {
 
 		mRocket.setXY((int) mPosition.X + WIDTH / 2, (int) mPosition.Y + HEIGHT);
 		mRocket.update();
-	}
-
-	public void draw(Canvas canvas) {
-		mPaint.setColor(Color.BLUE);
-		mPaint.setStyle(Paint.Style.FILL);
-		canvas.drawRect(mPosition.X, mPosition.Y, mPosition.X + WIDTH,
-				mPosition.Y + HEIGHT, mPaint);
-		
-		mRocket.draw(canvas);
-		
-		if(mTarget != null && !mTarget.isDead()) {
-			mPaint.setStyle(Paint.Style.STROKE);
-			mPaint.setColor(Color.RED);
-			
-			float x = mTarget.getX(), y = mTarget.getY();
-			int w = mTarget.getWidth(), h = mTarget.getHeight();
-			
-			canvas.drawCircle(x + w / 2, y + h / 2, w > h ? w : h, mPaint);
-		}
-		
 	}
 }

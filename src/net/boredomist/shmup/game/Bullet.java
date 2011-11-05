@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,12 +24,29 @@ public class Bullet extends Entity {
 		mVelocity.X = vx;
 		mVelocity.Y = vy;
 
-		mDamage = 10;
+		mDamage = 2;
 		
 		mEnemyBullet = enemy;
 
 		mPaint = new Paint();
 		mPaint.setColor(Color.WHITE);
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		int x = (int) mPosition.X;
+		int y = (int) mPosition.Y;
+		canvas.drawRect(x, y, x + WIDTH, y + HEIGHT, mPaint);
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
+	}
+
+	@Override
+	public int getWidth() {
+		return WIDTH;
 	}
 
 	@Override
@@ -56,23 +73,6 @@ public class Bullet extends Entity {
 			}
 		}
 
-	}
-
-	@Override
-	public void draw(Canvas canvas) {
-		int x = (int) mPosition.X;
-		int y = (int) mPosition.Y;
-		canvas.drawRect(x, y, x + WIDTH, y + HEIGHT, mPaint);
-	}
-
-	@Override
-	public int getWidth() {
-		return WIDTH;
-	}
-
-	@Override
-	public int getHeight() {
-		return HEIGHT;
 	}
 
 }

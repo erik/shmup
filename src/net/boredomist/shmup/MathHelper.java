@@ -4,7 +4,7 @@ package net.boredomist.shmup;
 
 public class MathHelper {
 	// precalculated values for sin and cosine, to speed up computation
-	
+
 	// cos 0..90
 	static final float cosCache[] = { 1.0f, 0.9998476951563913f,
 			0.9993908270190958f, 0.9986295347545738f, 0.9975640502598242f,

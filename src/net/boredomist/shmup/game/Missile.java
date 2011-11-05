@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,10 +12,6 @@ public class Missile extends Bullet {
 	private ParticleSystem mRocket;
 
 	private boolean mEnemy;
-
-	public Missile(int x, int y, int targetX, int targetY, GameWorld world) {
-		this(x, y, targetX, targetY, false, world);
-	}
 
 	public Missile(int x, int y, int targetX, int targetY, boolean enemy,
 			GameWorld world) {
@@ -40,6 +36,28 @@ public class Missile extends Bullet {
 		mPaint.setColor(Color.RED);
 	}
 
+	public Missile(int x, int y, int targetX, int targetY, GameWorld world) {
+		this(x, y, targetX, targetY, false, world);
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		canvas.drawRect(mPosition.X, mPosition.Y, mPosition.X + WIDTH,
+				mPosition.Y + HEIGHT, mPaint);
+		mRocket.draw(canvas);
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
+	}
+
+	@Override
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	@Override
 	public void update() {
 
 		if (mPosition.X < mTarget.X - mVelocity.X) {
@@ -85,22 +103,6 @@ public class Missile extends Bullet {
 					+ HEIGHT);
 		}
 		mRocket.update();
-	}
-
-	public void draw(Canvas canvas) {
-		canvas.drawRect(mPosition.X, mPosition.Y, mPosition.X + WIDTH,
-				mPosition.Y + HEIGHT, mPaint);
-		mRocket.draw(canvas);
-	}
-
-	@Override
-	public int getWidth() {
-		return WIDTH;
-	}
-
-	@Override
-	public int getHeight() {
-		return HEIGHT;
 	}
 
 }

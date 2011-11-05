@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import android.graphics.Canvas;
 
@@ -9,11 +9,12 @@ public class Enemy extends Entity {
 	}
 
 	@Override
-	public void update() {
+	public void draw(Canvas canvas) {
 	}
 
 	@Override
-	public void draw(Canvas canvas) {
+	public int getHeight() {
+		return 0;
 	}
 
 	@Override
@@ -22,8 +23,7 @@ public class Enemy extends Entity {
 	}
 
 	@Override
-	public int getHeight() {
-		return 0;
+	public void update() {
 	}
 
 }

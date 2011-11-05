@@ -1,6 +1,6 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
-public enum Gun {
+public enum GunType {
 	MISSILE, AUTOMISSILE, MULTISHOT, DEFAULT;
 
 	public int getCooldownPeriod() {

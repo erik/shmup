@@ -1,13 +1,14 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.gui;
 
-import android.content.Context;
-import android.content.res.Resources;
+import net.boredomist.shmup.game.Controller;
+import net.boredomist.shmup.game.Difficulty;
+import net.boredomist.shmup.game.GameWorld;
+import net.boredomist.shmup.game.ScrollingBackground;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 
 public class GameController extends Controller {
 
@@ -44,24 +45,28 @@ public class GameController extends Controller {
 
 	}
 
-	public void update() {
-		mWorld.update();
-		mBackground.update();
-	}
-
+	@Override
 	public void draw(Canvas canvas) {
 		mBackground.draw(canvas);
 		mWorld.draw(canvas);
 	}
 
+	@Override
+	public Bundle restoreState(Bundle b) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public Bundle saveState(Bundle b) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Bundle restoreState(Bundle b) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public void update() {
+		mWorld.update();
+		mBackground.update();
 	}
 
 }

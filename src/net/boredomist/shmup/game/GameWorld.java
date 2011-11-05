@@ -1,8 +1,9 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.boredomist.shmup.gui.Input;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -57,29 +58,94 @@ public class GameWorld {
 		mKills = mStreak = 0;
 	}
 
-	public int getRandom(int n) {
-		return mRandom.nextInt(n);
-	}
-
-	public void addPowerup(Powerup p) {
-		mPowerups.add(p);
+	public void addExplosion(float x, float y) {
+		mSystems.add(new ParticleSystem((int) x, (int) y, 100, 30));
 	}
 
 	public void addExplosion(ParticleSystem s) {
 		mSystems.add(s);
 	}
 
-	public void addExplosion(float x, float y) {
-		mSystems.add(new ParticleSystem((int) x, (int) y, 100, 30));
-	}
-
 	public void addNotification(String message, int ticks, boolean flash) {
 		mNotifications.addNotification(message, ticks, flash);
 	}
 
+	public void addPowerup(Powerup p) {
+		mPowerups.add(p);
+	}
+
+	public void draw(Canvas canvas) {
+		for (Enemy e : mEnemies) {
+			e.draw(canvas);
+		}
+
+		for (ParticleSystem s : mSystems) {
+			s.draw(canvas);
+		}
+
+		for (Powerup p : mPowerups) {
+			p.draw(canvas);
+		}
+
+		if (!mPlayerShip.isDead()) {
+			mPlayerShip.draw(canvas);
+		} else {
+			canvas.drawText("GAME OVER", (int) mSize.X / 2, (int) mSize.Y / 2,
+					mPaint);
+		}
+
+		mNotifications.draw(canvas);
+
+	}
+
+	public Context getContext() {
+		return mContext;
+	}
+
+	public ArrayList<Enemy> getEnemies() {
+		return mEnemies;
+	}
+
+	public int getHeight() {
+		return (int) mSize.Y;
+	}
+
+	public Input getInput() {
+		return mInput;
+	}
+
+	public int getKills() {
+		return mKills;
+	}
+
+	public PlayerShip getPlayer() {
+		return mPlayerShip;
+	}
+
+	public int getRandom(int n) {
+		return mRandom.nextInt(n);
+	}
+
+	public Point getSize() {
+		return mSize;
+	}
+
+	public int getStreak() {
+		return mStreak;
+	}
+
+	public int getWidth() {
+		return (int) mSize.X;
+	}
+
+	public void setSize(int w, int h) {
+		mSize.X = w;
+		mSize.Y = h;
+	}
+
 	public void update() {
 
-		if (mEnemies.size() < 5) {
+		if (mEnemies.size() < 3) {
 			BasicEnemy e = new BasicEnemy(this);
 
 			mEnemies.add(e);
@@ -123,70 +189,5 @@ public class GameWorld {
 
 		mNotifications.update();
 
-	}
-
-	public int getStreak() {
-		return mStreak;
-	}
-
-	public int getKills() {
-		return mKills;
-	}
-
-	public void draw(Canvas canvas) {
-		for (Enemy e : mEnemies) {
-			e.draw(canvas);
-		}
-
-		for (ParticleSystem s : mSystems) {
-			s.draw(canvas);
-		}
-
-		for (Powerup p : mPowerups) {
-			p.draw(canvas);
-		}
-
-		if (!mPlayerShip.isDead()) {
-			mPlayerShip.draw(canvas);
-		} else {
-			canvas.drawText("GAME OVER", (int) mSize.X / 2, (int) mSize.Y / 2,
-					mPaint);
-		}
-
-		mNotifications.draw(canvas);
-
-	}
-
-	public void setSize(int w, int h) {
-		mSize.X = w;
-		mSize.Y = h;
-	}
-
-	public ArrayList<Enemy> getEnemies() {
-		return mEnemies;
-	}
-
-	public PlayerShip getPlayer() {
-		return mPlayerShip;
-	}
-
-	public int getWidth() {
-		return (int) mSize.X;
-	}
-
-	public int getHeight() {
-		return (int) mSize.Y;
-	}
-
-	public Point getSize() {
-		return mSize;
-	}
-
-	public Input getInput() {
-		return mInput;
-	}
-
-	public Context getContext() {
-		return mContext;
 	}
 }

@@ -1,4 +1,4 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import java.util.ArrayList;
 
@@ -28,47 +28,6 @@ public abstract class Entity {
 		mAllowOutX = false;
 	}
 
-	public abstract void update();
-
-	public abstract void draw(Canvas canvas);
-
-	public abstract int getWidth();
-
-	public abstract int getHeight();
-
-	public boolean isDead() {
-		return mDead;
-	}
-
-	public void takeDamage(float dam) {
-		if (mDead) {
-			return;
-		}
-
-		mLife -= dam;
-
-		if (mLife <= 0) {
-			mDead = true;
-			mWorld.addExplosion(mPosition.X, mPosition.Y);
-		}
-
-	}
-
-	protected Entity checkCollisions() {
-		ArrayList<Enemy> enemies = mWorld.getEnemies();
-		Rect hitbox = getHitBox();
-		for (Entity e : enemies) {
-			if (hitbox.intersect(e.getHitBox())) {
-				return e;
-			}
-		}
-		return null;
-	}
-
-	public boolean collidesWith(Entity other) {
-		return getHitBox().intersect(other.getHitBox());
-	}
-
 	public void checkBounds() {
 		if (mAllowOutX) {
 			mPosition.X = Math.max(Math.min(mPosition.X, mWorld.getWidth()),
@@ -87,12 +46,33 @@ public abstract class Entity {
 		}
 	}
 
+	protected Entity checkCollisions() {
+		ArrayList<Enemy> enemies = mWorld.getEnemies();
+		Rect hitbox = getHitBox();
+		for (Entity e : enemies) {
+			if (hitbox.intersect(e.getHitBox())) {
+				return e;
+			}
+		}
+		return null;
+	}
+
+	public boolean collidesWith(Entity other) {
+		return getHitBox().intersect(other.getHitBox());
+	}
+
+	public abstract void draw(Canvas canvas);
+
+	public abstract int getHeight();
+
 	public Rect getHitBox() {
 		mHitbox.set((int) mPosition.X, (int) mPosition.Y, (int) mPosition.X
 				+ getWidth(), (int) mPosition.Y + getHeight());
 
 		return mHitbox;
 	}
+
+	public abstract int getWidth();
 
 	public float getX() {
 		return mPosition.X;
@@ -102,9 +82,29 @@ public abstract class Entity {
 		return mPosition.Y;
 	}
 
+	public boolean isDead() {
+		return mDead;
+	}
+
 	public void setXY(float x, float y) {
 		mPosition.X = x;
 		mPosition.Y = y;
 	}
+
+	public void takeDamage(float dam) {
+		if (mDead) {
+			return;
+		}
+
+		mLife -= dam;
+
+		if (mLife <= 0) {
+			mDead = true;
+			mWorld.addExplosion(mPosition.X, mPosition.Y);
+		}
+
+	}
+
+	public abstract void update();
 
 }

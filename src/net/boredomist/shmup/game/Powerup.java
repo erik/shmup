@@ -1,5 +1,6 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
+import net.boredomist.shmup.MathHelper;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +25,7 @@ public class Powerup extends Entity {
 		mSystem = new ParticleSystem(x, y, -1, 5) {
 			private int mWut = 0;
 
+			@Override
 			protected Particle createParticle() {
 				mWut += 10;
 				int cos = (int) (2 * MathHelper.cos(mWut));
@@ -38,6 +40,24 @@ public class Powerup extends Entity {
 
 		mPaint = new Paint();
 
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		mPaint.setColor(Color.rgb(255, 255, 255));
+		canvas.drawRect((int) mPosition.X, (int) mPosition.Y, (int) mPosition.X
+				+ WIDTH, (int) mPosition.Y + HEIGHT, mPaint);
+		mSystem.draw(canvas);
+	}
+
+	@Override
+	public int getHeight() {
+		return HEIGHT;
+	}
+
+	@Override
+	public int getWidth() {
+		return WIDTH;
 	}
 
 	@Override
@@ -61,24 +81,6 @@ public class Powerup extends Entity {
 			mShip.givePowerup();
 		}
 
-	}
-
-	@Override
-	public void draw(Canvas canvas) {
-		mPaint.setColor(Color.rgb(255, 255, 255));
-		canvas.drawRect((int) mPosition.X, (int) mPosition.Y, (int) mPosition.X
-				+ WIDTH, (int) mPosition.Y + HEIGHT, mPaint);
-		mSystem.draw(canvas);
-	}
-
-	@Override
-	public int getWidth() {
-		return WIDTH;
-	}
-
-	@Override
-	public int getHeight() {
-		return HEIGHT;
 	}
 
 }

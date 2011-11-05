@@ -1,5 +1,6 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
+import net.boredomist.shmup.R;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,6 +25,14 @@ public class ScrollingBackground {
 		tmp.recycle();
 	}
 
+	public void draw(Canvas canvas) {
+		if(mPosition.Y != 0) {
+			canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y - mBackground.getHeight(), null);
+		}
+		
+		canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y, null);
+	}
+
 	public void update() {
 
 		mPosition.Y = mPosition.Y + 2;
@@ -32,13 +41,5 @@ public class ScrollingBackground {
 			mPosition.Y = 0;
 		}
 		
-	}
-
-	public void draw(Canvas canvas) {
-		if(mPosition.Y != 0) {
-			canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y - mBackground.getHeight(), null);
-		}
-		
-		canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y, null);
 	}
 }

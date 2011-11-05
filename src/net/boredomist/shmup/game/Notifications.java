@@ -1,10 +1,22 @@
-package net.boredomist.shmup;
+package net.boredomist.shmup.game;
 
 import java.util.ArrayList;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+
+class Notification {
+	public String message;
+	public int ticks;
+	public boolean flash;
+
+	public Notification(String message, int ticks, boolean flash) {
+		this.message = message;
+		this.ticks = ticks;
+		this.flash = flash;
+	}
+}
 
 public class Notifications {
 	private GameWorld mWorld;
@@ -32,6 +44,20 @@ public class Notifications {
 		mNotifications.add(new Notification(message, ticks, flash));
 	}
 
+	public void draw(Canvas canvas) {
+		int w = mWorld.getWidth(), h = mWorld.getHeight(), x = -mNotifications
+				.size() / 2;
+		for (Notification n : mNotifications) {
+			mPaint.setColor(Color.WHITE);
+			if (n.flash && mFlash) {
+				mPaint.setColor(Color.RED);
+			}
+			canvas.drawText(n.message, w / 2, h / 2 + x * 32, mPaint);
+
+			x++;
+		}
+	}
+
 	public void update() {
 		mTicks++;
 
@@ -46,31 +72,5 @@ public class Notifications {
 			}
 
 		}
-	}
-
-	public void draw(Canvas canvas) {
-		int w = mWorld.getWidth(), h = mWorld.getHeight(), x = -mNotifications
-				.size() / 2;
-		for (Notification n : mNotifications) {
-			mPaint.setColor(Color.WHITE);
-			if (n.flash && mFlash) {
-				mPaint.setColor(Color.RED);
-			}
-			canvas.drawText(n.message, w / 2, h / 2 + x * 32, mPaint);
-
-			x++;
-		}
-	}
-}
-
-class Notification {
-	public String message;
-	public int ticks;
-	public boolean flash;
-
-	public Notification(String message, int ticks, boolean flash) {
-		this.message = message;
-		this.ticks = ticks;
-		this.flash = flash;
 	}
 }
