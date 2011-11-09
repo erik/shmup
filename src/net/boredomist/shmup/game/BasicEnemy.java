@@ -51,7 +51,7 @@ public class BasicEnemy extends Enemy {
 		mDir = tmp % 2 == 0 ? -1 * tmp : 1 * tmp;
 
 		mDrawable = world.getContext().getResources()
-				.getDrawable(R.drawable.basic_enemy);
+				.getDrawable(R.drawable.basic_enemy1);
 	}
 
 	@Override
@@ -60,14 +60,15 @@ public class BasicEnemy extends Enemy {
 				(int) mPosition.X + WIDTH, (int) mPosition.Y + HEIGHT);
 		mDrawable.draw(canvas);
 
-		Paint paint = new Paint();
+		if (mLife < 45) {
+			Paint paint = new Paint();
 
-		paint.setColor(Color.rgb(255 - (int) ((mLife / 45) * 255),
-				(int) (((mLife / 45) * 255)), 0));
+			paint.setColor(Color.rgb(255 - (int) ((mLife / 45) * 255),
+					(int) (((mLife / 45) * 255)), 0));
 
-		canvas.drawRect(mPosition.X, mPosition.Y - 10, mPosition.X
-				+ (mLife / 45) * WIDTH, mPosition.Y - 5, paint);
-
+			canvas.drawRect(mPosition.X, mPosition.Y - 10, mPosition.X
+					+ (mLife / 45) * WIDTH, mPosition.Y - 5, paint);
+		}
 		mBulletEmitter.draw(canvas);
 	}
 

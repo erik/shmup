@@ -34,7 +34,7 @@ public class RocketParticleSystem extends ParticleSystem {
 		int xv = mRandom.nextInt((int) mVelocity.X) - (int) mVelocity.X / 2;
 		int yv = mRandom.nextInt((int) mVelocity.Y);
 
-		Particle p = new Particle(x, mY, xv, yv, mRandom.nextInt(mLife), 2,
+		Particle p = new Particle(x, mY, xv, yv, mRandom.nextInt(mLife), 5,
 				mStartColor, mStopColor);
 		return p;
 	}

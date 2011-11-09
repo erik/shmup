@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 public class PlayerGun {
 	private ArrayList<Bullet> mBullets;
 
+	/* OH GOD I'M SO SORRY PLEASE FORGIVE ME */
 	private boolean mHasDefault = false, mHasMissile = false,
 			mHasAutoMissile = false, mHasMultishot = false;
 	private int mDefaultTicks = 0, mMissileTicks = 0, mAutoMissileTicks = 0,

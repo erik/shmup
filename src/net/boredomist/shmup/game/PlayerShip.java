@@ -36,14 +36,14 @@ public class PlayerShip extends Entity {
 		mDirection = Direction.STRAIGHT;
 
 		mDrawableLeft = mWorld.getContext().getResources()
-				.getDrawable(R.drawable.hero_ship_left);
+				.getDrawable(R.drawable.hero_ship_left1);
 		mDrawableCenter = mWorld.getContext().getResources()
-				.getDrawable(R.drawable.hero_ship_center);
+				.getDrawable(R.drawable.hero_ship_center1);
 		mDrawableRight = mWorld.getContext().getResources()
-				.getDrawable(R.drawable.hero_ship_right);
+				.getDrawable(R.drawable.hero_ship_right1);
 
 		mRocket = new RocketParticleSystem((int) mPosition.X,
-				(int) mPosition.Y, 10);
+				(int) mPosition.Y, 4);
 
 		mLife = MAX_LIFE;
 

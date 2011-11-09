@@ -38,7 +38,7 @@ public class ParticleSystem {
 		int cos = (int) (((int)(Math.random() * 10) + 1) * MathHelper.cos((int) (Math.random() * 360)));
 		int sin = (int) (((int)(Math.random() * 10) + 1) * MathHelper.sin((int) (Math.random() * 360)));
 		
-		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 3, mStartColor, mStopColor);
+		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 5, mStartColor, mStopColor);
 		return p;
 	}
 	

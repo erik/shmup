@@ -18,28 +18,30 @@ public class ScrollingBackground {
 		mSize = new Point(cont.getWidth(), cont.getHeight());
 
 		Bitmap tmp = BitmapFactory.decodeResource(cont.getContext()
-				.getResources(), R.drawable.background);
-		
-		mBackground = Bitmap.createScaledBitmap(tmp, cont.getWidth(), cont.getHeight(), false);
-		
+				.getResources(), R.drawable.background1);
+
+		mBackground = Bitmap.createScaledBitmap(tmp, cont.getWidth(),
+				cont.getHeight(), false);
+
 		tmp.recycle();
 	}
 
 	public void draw(Canvas canvas) {
-		if(mPosition.Y != 0) {
-			canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y - mBackground.getHeight(), null);
+		if (mPosition.Y != 0) {
+			canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y
+					- mBackground.getHeight(), null);
 		}
-		
+
 		canvas.drawBitmap(mBackground, mPosition.X, mPosition.Y, null);
 	}
 
 	public void update() {
 
 		mPosition.Y = mPosition.Y + 2;
-		
-		if(mPosition.Y >= mSize.Y) {
+
+		if (mPosition.Y >= mSize.Y) {
 			mPosition.Y = 0;
 		}
-		
+
 	}
 }

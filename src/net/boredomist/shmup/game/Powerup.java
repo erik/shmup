@@ -66,7 +66,7 @@ public class Powerup extends Entity {
 		mPosition.X += mVelocity.X;
 		mPosition.Y += mVelocity.Y;
 
-		if (mPosition.Y >= mWorld.getHeight()) {
+		if (mPosition.Y >= mWorld.getHeight() + HEIGHT) {
 			mDead = true;
 		}
 
