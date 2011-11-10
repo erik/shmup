@@ -7,27 +7,19 @@ import android.graphics.Canvas;
 
 public class BulletEmitter {
 	public enum BulletPattern {
-		RADIAL, BEAM, SPOKES, CIRCLE
+		RADIAL, BEAM, SPOKES, CIRCLE, SPIRAL
 	}
 
 	private GameWorld mWorld;
 	private Entity mEntity;
 	private BulletPattern mPattern;
-	private ArrayList<Bullet> mBullets;
 	private int mTicks;
 
 	public BulletEmitter(GameWorld world, Entity entity, BulletPattern pattern) {
 		mWorld = world;
 		mEntity = entity;
 		mPattern = pattern;
-		mBullets = new ArrayList<Bullet>();
 		mTicks = 0;
-	}
-
-	public void draw(Canvas canvas) {
-		for (Bullet b : mBullets) {
-			b.draw(canvas);
-		}
 	}
 
 	public void setType(BulletPattern pattern) {
@@ -49,16 +41,12 @@ public class BulletEmitter {
 			break;
 		case CIRCLE:
 			updateCircle();
+			break;
+		case SPIRAL:
+			updateSpiral();
+			break;
 		}
 
-		for (int i = mBullets.size() - 1; i >= 0; --i) {
-			Bullet b = mBullets.get(i);
-
-			b.update();
-			if (b.isDead()) {
-				mBullets.remove(i);
-			}
-		}
 	}
 
 	public void updateBeam() {
@@ -74,8 +62,9 @@ public class BulletEmitter {
 
 		int xv = Math.min((int) ((xf - mEntity.mPosition.X) / tmp), 20);
 
-		mBullets.add(new Bullet((int) mEntity.mPosition.X + mEntity.getWidth()
-				/ 2, (int) mEntity.mPosition.Y, xv, 10, true, mWorld));
+		mWorld.addBullet(new Bullet((int) mEntity.mPosition.X
+				+ mEntity.getWidth() / 2, (int) mEntity.mPosition.Y, xv, 10,
+				true, mWorld));
 
 	}
 
@@ -87,7 +76,7 @@ public class BulletEmitter {
 			int xv = (int) (MathHelper.cos(i * 4) * 10);
 			int yv = (int) (MathHelper.sin(i * 4) * 10);
 
-			mBullets.add(new Bullet((int) mEntity.mPosition.X
+			mWorld.addBullet(new Bullet((int) mEntity.mPosition.X
 					+ mEntity.getWidth() / 2, (int) mEntity.mPosition.Y, xv,
 					yv, true, mWorld));
 		}
@@ -101,8 +90,19 @@ public class BulletEmitter {
 		int xv = (int) (MathHelper.cos(mTicks * 5) * 10);
 		int yv = (int) (MathHelper.sin(mTicks * 5) * 10);
 
-		mBullets.add(new Bullet((int) mEntity.mPosition.X + mEntity.getWidth()
-				/ 2, (int) mEntity.mPosition.Y, xv, yv, true, mWorld));
+		mWorld.addBullet(new Bullet((int) mEntity.mPosition.X
+				+ mEntity.getWidth() / 2, (int) mEntity.mPosition.Y, xv, yv,
+				true, mWorld));
+
+	}
+
+	public void updateSpiral() {
+		if (mTicks % 2 != 0 || ((mTicks / 80) % 2 == 0)) {
+			return;
+		}
+
+		mWorld.addBullet(new SpiralBullet((int) mEntity.mPosition.X
+				+ mEntity.getWidth() / 2, (int) mEntity.mPosition.Y, mWorld));
 
 	}
 
@@ -115,7 +115,7 @@ public class BulletEmitter {
 			int xv = (int) (MathHelper.cos(mTicks * 4 + 120 * i) * 10);
 			int yv = (int) (MathHelper.sin(mTicks * 4 + 120 * i) * 10);
 
-			mBullets.add(new Bullet((int) mEntity.mPosition.X
+			mWorld.addBullet(new Bullet((int) mEntity.mPosition.X
 					+ mEntity.getWidth() / 2, (int) mEntity.mPosition.Y, xv,
 					yv, true, mWorld));
 		}

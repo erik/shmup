@@ -38,19 +38,19 @@ public class AutoMissile extends Bullet {
 		mPaint.setStyle(Paint.Style.FILL);
 		canvas.drawRect(mPosition.X, mPosition.Y, mPosition.X + WIDTH,
 				mPosition.Y + HEIGHT, mPaint);
-		
+
 		mRocket.draw(canvas);
-		
-		if(mTarget != null && !mTarget.isDead()) {
+
+		if (mTarget != null && !mTarget.isDead()) {
 			mPaint.setStyle(Paint.Style.STROKE);
 			mPaint.setColor(Color.RED);
-			
+
 			float x = mTarget.getX(), y = mTarget.getY();
 			int w = mTarget.getWidth(), h = mTarget.getHeight();
-			
+
 			canvas.drawCircle(x + w / 2, y + h / 2, w > h ? w : h, mPaint);
 		}
-		
+
 	}
 
 	@Override

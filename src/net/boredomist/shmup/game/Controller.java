@@ -12,7 +12,7 @@ public abstract class Controller {
 	protected Difficulty mDifficulty;
 	protected Context mContext;
 	protected Input mInput;
-	
+
 	public GameState mState;
 
 	public Controller(GameThread thread) {
@@ -22,7 +22,7 @@ public abstract class Controller {
 		mHeight = thread.getHeight();
 		mInput = thread.getInput();
 	}
-	
+
 	public abstract void draw(Canvas canvas);
 
 	public Context getContext() {
@@ -34,38 +34,38 @@ public abstract class Controller {
 	}
 
 	public GameState getGameState() {
-		return mState;		
+		return mState;
 	}
-	
+
 	public int getHeight() {
 		return mHeight;
 	}
-	
+
 	public Input getInput() {
 		return mInput;
 	}
-	
+
 	public int getWidth() {
 		return mWidth;
 	}
-	
+
 	public abstract Bundle restoreState(Bundle b);
-	
+
 	public abstract Bundle saveState(Bundle b);
-	
+
 	public void setDifficulty(Difficulty d) {
 		mDifficulty = d;
 	}
-	
+
 	public void setGameState(GameState s) {
-		mState = s;		
+		mState = s;
 	}
-	
+
 	public void setSize(int w, int h) {
 		mWidth = w;
 		mHeight = h;
 	}
-	
+
 	public abstract void update();
-	
+
 }

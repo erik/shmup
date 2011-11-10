@@ -26,22 +26,25 @@ public class ParticleSystem {
 
 		mParticles = new ArrayList<Particle>();
 		mDead = false;
-		
+
 		mPaint = new Paint();
-		
+
 		mStartColor = Color.YELLOW;
 		mStopColor = Color.RED;
 	}
 
 	// this just exists to make it easier to override in subclasses
 	protected Particle createParticle() {
-		int cos = (int) (((int)(Math.random() * 10) + 1) * MathHelper.cos((int) (Math.random() * 360)));
-		int sin = (int) (((int)(Math.random() * 10) + 1) * MathHelper.sin((int) (Math.random() * 360)));
-		
-		Particle p = new Particle(mX, mY, cos, sin, (int)(Math.random() * 25), 5, mStartColor, mStopColor);
+		int cos = (int) (((int) (Math.random() * 10) + 1) * MathHelper
+				.cos((int) (Math.random() * 360)));
+		int sin = (int) (((int) (Math.random() * 10) + 1) * MathHelper
+				.sin((int) (Math.random() * 360)));
+
+		Particle p = new Particle(mX, mY, cos, sin, (int) (Math.random() * 25),
+				5, mStartColor, mStopColor);
 		return p;
 	}
-	
+
 	public void draw(Canvas canvas) {
 		for (Particle p : mParticles) {
 			p.draw(canvas, mPaint);
@@ -79,11 +82,11 @@ public class ParticleSystem {
 				mParticles.remove(i);
 			}
 		}
-		
-		if(mParticles.size() == 0) {
+
+		if (mParticles.size() == 0) {
 			mDead = true;
 		}
-		
+
 	}
 
 }

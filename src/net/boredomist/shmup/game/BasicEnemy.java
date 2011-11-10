@@ -31,19 +31,28 @@ public class BasicEnemy extends Enemy {
 		mLife = 45;
 		mTicks = 0;
 
-		int rand = mWorld.getRandom(100);
+		int rand = mWorld.getRandom(5);
 
-		if (rand < 20) {
+		switch (rand) {
+		case 0:
 			mBulletEmitter = new BulletEmitter(world, this,
 					BulletPattern.CIRCLE);
-		} else if (rand < 50) {
-			mBulletEmitter = new BulletEmitter(world, this,
-					BulletPattern.SPOKES);
-		} else if (rand < 80) {
+			break;
+		case 1:
 			mBulletEmitter = new BulletEmitter(world, this,
 					BulletPattern.RADIAL);
-		} else {
+			break;
+		case 2:
 			mBulletEmitter = new BulletEmitter(world, this, BulletPattern.BEAM);
+			break;
+		case 3:
+			mBulletEmitter = new BulletEmitter(world, this,
+					BulletPattern.SPIRAL);
+			break;
+		case 4:
+			mBulletEmitter = new BulletEmitter(world, this,
+					BulletPattern.SPOKES);
+			break;
 		}
 
 		int tmp = world.getRandom(2) + 4;
@@ -69,7 +78,6 @@ public class BasicEnemy extends Enemy {
 			canvas.drawRect(mPosition.X, mPosition.Y - 10, mPosition.X
 					+ (mLife / 45) * WIDTH, mPosition.Y - 5, paint);
 		}
-		mBulletEmitter.draw(canvas);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ public class PlayerShip extends Entity {
 	private enum Direction {
 		LEFT, STRAIGHT, RIGHT
 	}
+
 	public static final int WIDTH = 64, HEIGHT = 64;
 
 	public static final float MAX_LIFE = 100;;

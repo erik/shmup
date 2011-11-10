@@ -17,6 +17,7 @@ public class GameWorld {
 	protected ArrayList<Enemy> mEnemies;
 	protected ArrayList<ParticleSystem> mSystems;
 	protected ArrayList<Powerup> mPowerups;
+	protected ArrayList<Bullet> mBullets;
 
 	protected Point mSize;
 	protected Input mInput;
@@ -55,7 +56,13 @@ public class GameWorld {
 		mRandom = new Random();
 		mGameOver = false;
 
+		mBullets = new ArrayList<Bullet>();
+
 		mKills = mStreak = 0;
+	}
+
+	public void addBullet(Bullet b) {
+		mBullets.add(b);
 	}
 
 	public void addExplosion(float x, float y) {
@@ -77,6 +84,10 @@ public class GameWorld {
 	public void draw(Canvas canvas) {
 		for (Enemy e : mEnemies) {
 			e.draw(canvas);
+		}
+
+		for (Bullet b : mBullets) {
+			b.draw(canvas);
 		}
 
 		for (ParticleSystem s : mSystems) {
@@ -180,6 +191,15 @@ public class GameWorld {
 			}
 		}
 
+		for (int i = mBullets.size() - 1; i >= 0; --i) {
+			Bullet b = mBullets.get(i);
+
+			b.update();
+			if (b.isDead()) {
+				mBullets.remove(i);
+			}
+		}
+
 		if (mPlayerShip.isDead()) {
 			mGameOver = true;
 			mStreak = 0;
@@ -188,6 +208,5 @@ public class GameWorld {
 		}
 
 		mNotifications.update();
-
 	}
 }

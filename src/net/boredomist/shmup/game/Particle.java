@@ -23,14 +23,17 @@ public class Particle {
 		this.size = size;
 		this.xv = xv;
 		this.yv = yv;
-		
+
 		this.color = Color.rgb(start >> 16 & 0xFF, start >> 8 & 0xFF,
 				start & 0xFF);
 
-		dr = (int)(((end >> 16 & 0xFF) - (color >> 16 & 0xFF)) / ((life == 0) ? .001 : life));
-		dg = (int)(((end >> 8 & 0xFF) - (color >> 8 & 0xFF)) / ((life == 0) ? .001 : life));
-		db = (int)(((end & 0xFF) - (color & 0xFF)) / ((life == 0) ? .001 : life));
-		
+		dr = (int) (((end >> 16 & 0xFF) - (color >> 16 & 0xFF)) / ((life == 0) ? .001
+				: life));
+		dg = (int) (((end >> 8 & 0xFF) - (color >> 8 & 0xFF)) / ((life == 0) ? .001
+				: life));
+		db = (int) (((end & 0xFF) - (color & 0xFF)) / ((life == 0) ? .001
+				: life));
+
 		this.dead = false;
 
 	}
@@ -51,11 +54,11 @@ public class Particle {
 		}
 		x += xv;
 		y += yv;
- 
+
 		int cr = (color >> 16 & 0xFF) + dr;
 		int cg = (color >> 8 & 0xFF) + dg;
 		int cb = (color & 0xFF) + db;
 
-		color = Color.rgb(cr, cg, cb); 
+		color = Color.rgb(cr, cg, cb);
 	}
 }

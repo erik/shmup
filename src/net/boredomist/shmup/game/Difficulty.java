@@ -1,6 +1,5 @@
 package net.boredomist.shmup.game;
 
-
 public enum Difficulty {
 	EASY, MEDIUM, HARD, LUDICROUS, NONE;
 

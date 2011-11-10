@@ -25,7 +25,7 @@ public class Bullet extends Entity {
 		mVelocity.Y = vy;
 
 		mDamage = 2;
-		
+
 		mEnemyBullet = enemy;
 
 		mPaint = new Paint();
@@ -62,8 +62,9 @@ public class Bullet extends Entity {
 
 		if (mEnemyBullet) {
 			PlayerShip p = mWorld.getPlayer();
-			if(collidesWith(p)) {
+			if (collidesWith(p)) {
 				p.takeDamage(mDamage);
+				mDead = true;
 			}
 		} else {
 			Entity c = checkCollisions();
